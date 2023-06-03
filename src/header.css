@@ -1,0 +1,35 @@
+.header {
+  height: 47px;
+
+  background-color: red;
+}
+
+.time {
+  margin-top: 2%;
+
+  height: 22px;
+  background: blue;
+}
+
+.wifi-1 {
+  padding-top: 2%;
+}
+.wifi-1 i {
+  margin-left: 5px;
+}
+.top-section {
+  position: relative;
+  top: 12px;
+  
+}
+.back-arrow {
+  position: absolute;
+  top: 50%;
+  height: 20px;
+}
+
+.profile img{
+  border-radius: 70%;
+  height: 60px;
+ 
+}
