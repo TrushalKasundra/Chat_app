@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useContext } from "react";
 import { array } from "./chat_input";
+import { observer } from "mobx-react";
+import { storeContext } from "./store";
 
-function Chatscreen() {
+const Chatscreen=observer((props)=> {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef(null);
   const [page, setPage] = useState(0);
+
+  const store = useContext(storeContext);
 
   useEffect(() => {
     fetch(`https://qa.corider.in/assignment/chat?page=0`)
@@ -14,13 +18,17 @@ function Chatscreen() {
       })
       .then(function (preItems) {
         setPosts(preItems.chats);
+console.log(posts);
       });
+
   }, []);
 
+  
   useEffect(() => {
+    console.log(posts)
     const fetchMessages = () => {
       setIsLoading(true);
-
+      
       fetch(`https://qa.corider.in/assignment/chat?page=${page}`)
         .then(function (response) {
           if (!response.ok) {
@@ -43,12 +51,22 @@ function Chatscreen() {
         fetchMessages();
       }
     };
-
+    
     containerRef.current.addEventListener("scroll", handleScroll);
     return () => {
       containerRef.current.removeEventListener("scroll", handleScroll);
     };
   }, [isLoading, page]);
+ 
+  console.log(posts);
+  useEffect(()=>{
+    
+    const newMessage  = [{message:store.inputMessage(),sender:{self:true}}]
+  setPosts([...posts,...  newMessage]);
+},[store.inputMessage()])
+
+console.log(posts);
+
 
   const self = {
     backgroundColor: "red",
@@ -77,7 +95,7 @@ function Chatscreen() {
     <div ref={containerRef} style={container}>
       {isLoading && <div>Loading...</div>}
       {posts?.map((item) => {
-        if (item.sender.self) {
+        if (item.sender?.self) {
           return (
             <div
               style={{ width: "75%", marginLeft: "25%", position: "relative" }}
@@ -108,6 +126,6 @@ function Chatscreen() {
       })}
     </div>
   );
-}
+})
 
 export default Chatscreen;

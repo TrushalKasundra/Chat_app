@@ -11,7 +11,7 @@ function App() {
   <BrowserRouter> 
 <Header/>
 
-<Chatscreen/>
+<Chatscreen />
 
 <ChatInput />
 
